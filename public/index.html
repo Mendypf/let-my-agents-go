@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let My Agents Go</title>
+<meta name="description" content="Your Claude Code agents, hauling stones for Pharaoh. Every file they change is a stone on the pyramid.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23262b44' d='M0 0h16v16H0z'/%3E%3Cpath fill='%23e4a672' d='M7 3h2v2h2v2h2v2h2v4H1V9h2V7h2V5h2z'/%3E%3Cpath fill='%23fee761' d='M7 3h2v2H7z'/%3E%3Cpath fill='%23b86f50' d='M1 12h14v1H1zM3 9h2v1H3zM9 7h2v1H9z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Frank+Ruhl+Libre:wght@500;700&family=Noto+Rashi+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body data-mode="live">
+<canvas id="screen" aria-label="Pharaoh's building site: each worker is one of your agents"></canvas>
+<div id="tags" aria-hidden="true"></div>
+
+<header id="hud">
+  <div id="brand">
+    <div id="titlerow"><h1 id="title">Let My Agents Go</h1></div>
+    <p id="tagline"></p>
+    <dl id="stats">
+      <div><dt>at work</dt><dd id="st-working">0</dd></div>
+      <div><dt>stones laid</dt><dd id="st-stones">0</dd></div>
+      <div><dt>pyramids</dt><dd id="st-pyramids">0</dd></div>
+      <div><dt>lashes</dt><dd id="st-whips">0</dd></div>
+      <div><dt>tax (tokens)</dt><dd id="st-tax">0</dd></div>
+    </dl>
+  </div>
+  <nav id="controls" aria-label="Controls">
+    <button class="ctl icon" id="btn-sound" aria-pressed="false" title="Sound"><i class="ic ic-sound"></i><span>Sound off</span></button>
+    <button class="ctl icon" id="btn-sky" title="Sky"><i class="ic ic-sun"></i><span>Sky: live</span></button>
+    <button class="ctl icon" id="btn-director" title="Director: trigger any scene by hand (D)"><i class="ic ic-star"></i><span>Director</span></button>
+    <button class="ctl" id="btn-mode"><i class="ic ic-play"></i><span>Watch demo</span></button>
+  </nav>
+</header>
+
+<aside id="roll" aria-label="Roll call">
+  <button id="btn-moses" class="moses-btn" title="Send Moses after the overseer who cracked the whip last (M)"><i class="ic ic-staff"></i><span>Send Moses</span></button>
+  <div class="panel roll-panel">
+    <button id="roll-toggle" class="roll-head" aria-label="Show or hide the roll call"><h2>Roll call</h2><span id="roll-count"></span></button>
+    <div id="roll-list"></div>
+  </div>
+</aside>
+
+<section id="chron" aria-label="Chronicle" hidden>
+  <ol id="chron-list"></ol>
+</section>
+
+<div id="scroll" role="status" aria-live="polite">
+  <i class="rod l"></i><i class="rod r"></i>
+  <div class="paper">
+    <button id="scroll-close" aria-label="Close">×</button>
+    <p id="sc-he" dir="rtl" lang="he"></p>
+    <p id="sc-en"></p>
+    <p id="sc-src"></p>
+    <div id="sc-rashi">
+      <p id="sc-rashi-he" dir="rtl" lang="he"></p>
+      <p id="sc-rashi-en"></p>
+      <p id="sc-rashi-src"></p>
+    </div>
+    <p id="sc-gloss"></p>
+  </div>
+</div>
+
+<div id="empty" hidden>
+  <h2>Pharaoh's site is quiet.</h2>
+  <p>No Claude Code session has worked in the last 45 minutes. Start one and its crew walks in from Goshen.</p>
+  <p id="empty-offline" hidden>Lost the connection to the watcher. Reconnecting.</p>
+  <button class="ctl big" id="empty-demo">Watch the demo</button>
+</div>
+
+<div id="director" aria-label="Director">
+  <h2 class="agents-h">What an agent does <small>demo</small></h2>
+  <div class="grid agents">
+    <button data-act="read"><kbd>1</kbd>Read files</button>
+    <button data-act="edit"><kbd>2</kbd>Edit files</button>
+    <button data-act="command"><kbd>3</kbd>Run a command</button>
+    <button data-act="search"><kbd>4</kbd>Search the web</button>
+    <button data-act="screenshot"><kbd>5</kbd>Screenshot</button>
+    <button data-act="skill"><kbd>6</kbd>Use a skill</button>
+    <button data-act="helpers"><kbd>7</kbd>Add helpers</button>
+    <button data-act="ask"><kbd>8</kbd>Ask you</button>
+    <button data-act="permission"><kbd>9</kbd>Wait for OK</button>
+    <button data-act="finish"><kbd>0</kbd>Finish</button>
+    <button data-act="decree"><kbd>E</kbd>New prompt</button>
+    <button data-act="fail"><kbd>X</kbd>Command fails</button>
+    <button data-act="todo"><kbd>U</kbd>To-do list</button>
+    <button data-act="sleep"><kbd>Z</kbd>Sleep</button>
+  </div>
+  <h2>Scenes</h2>
+  <div class="grid">
+    <button data-act="whip"><kbd>W</kbd>Whip</button>
+    <button data-act="moses"><kbd>M</kbd>Moses</button>
+    <button data-act="snake"><kbd>S</kbd>Python</button>
+    <button data-act="swallow"><kbd>A</kbd>Aaron's staff</button>
+    <button data-act="blood"><kbd>B</kbd>Blood</button>
+    <button data-act="frogs"><kbd>R</kbd>Frogs</button>
+    <button data-act="lice"><kbd>L</kbd>Lice</button>
+    <button data-act="hail"><kbd>H</kbd>Hail</button>
+    <button data-act="locusts"><kbd>O</kbd>Locusts</button>
+    <button data-act="darkness"><kbd>K</kbd>Darkness</button>
+    <button data-act="batya"><kbd>T</kbd>Batya</button>
+    <button data-act="nile"><kbd>N</kbd>Nile at dawn</button>
+    <button data-act="joseph"><kbd>J</kbd>Joseph's bones</button>
+    <button data-act="midwives"><kbd>I</kbd>Midwives</button>
+    <button data-act="newKing"><kbd>G</kbd>New king</button>
+    <button data-act="heart"><kbd>Y</kbd>Hard heart</button>
+    <button data-act="quarrel"><kbd>Q</kbd>Datan &amp; Aviram</button>
+    <button data-act="capstone"><kbd>C</kbd>Capstone</button>
+    <button data-act="dayone"><kbd>P</kbd>Day one</button>
+  </div>
+  <p class="keys">Press a button and this panel closes, so it stays out of your recording. Open it again with the star or D. The keys work without opening it.</p>
+</div>
+
+<div id="mark">Let My Agents Go</div>
+<button class="ctl icon" id="film-director" title="Director: pick an action (D)" aria-label="Director"><i class="ic ic-star"></i><span>Director</span></button>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

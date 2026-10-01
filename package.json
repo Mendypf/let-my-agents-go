@@ -1,0 +1,39 @@
+{
+  "name": "let-my-agents-go",
+  "version": "1.0.0",
+  "description": "Your Claude Code agents as Hebrew laborers building Pharaoh's pyramid.",
+  "main": "server.js",
+  "bin": {
+    "let-my-agents-go": "server.js"
+  },
+  "files": [
+    "server.js",
+    "lib/",
+    "public/css/",
+    "public/js/",
+    "public/sfx/",
+    "public/index.html"
+  ],
+  "scripts": {
+    "start": "node server.js --open",
+    "serve": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "ai-agents",
+    "coding-agents",
+    "visualizer",
+    "pixel-art"
+  ],
+  "author": "Mendypf",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mendypf/let-my-agents-go.git"
+  },
+  "homepage": "https://github.com/Mendypf/let-my-agents-go"
+}
