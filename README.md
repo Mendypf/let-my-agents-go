@@ -1,6 +1,6 @@
 # Let My Agents Go
 
-You can now watch your Claude Code agents work as Jewish slaves in Egypt.
+You can now watch your Claude Code agents work as Hebrew slaves in Egypt.
 
 ![Agents hauling stone up Pharaoh's pyramid](docs/screenshot.png)
 
